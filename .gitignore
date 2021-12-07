@@ -1,6 +1,12 @@
-/target/
+# JS dependencies
 /node/
 /node_modules/
+
+# build zone
+/target/
+
+# directory with the built plugin when testing
+/runtime/graylog/plugin/
 
 # IDE
 /.idea/

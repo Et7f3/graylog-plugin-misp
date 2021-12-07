@@ -107,6 +107,12 @@
             <version>${auto-value.version}</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>com.google.auto.service</groupId>
+            <artifactId>auto-service</artifactId>
+            <version>${auto-service.version}</version>
+            <scope>provided</scope>
+        </dependency>
 
         <!-- Test dependencies -->
         <dependency>
@@ -213,6 +219,7 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
                     <annotationProcessors>
+                        <annotationProcessor>com.google.auto.service.processor.AutoServiceProcessor</annotationProcessor>
                         <annotationProcessor>com.google.auto.value.processor.AutoValueProcessor</annotationProcessor>
                     </annotationProcessors>
                 </configuration>

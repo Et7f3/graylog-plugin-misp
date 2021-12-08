@@ -8,5 +8,9 @@
 # directory with the built plugin when testing
 /runtime/graylog/plugin/
 
+# For backend tests in python
+/validation/__pycache__/
+/validation/venv/
+
 # IDE
 /.idea/

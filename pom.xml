@@ -76,7 +76,6 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <graylog.version>${project.parent.version}</graylog.version>
-        <graylog2.plugin-dir>/usr/share/graylog-server/plugin</graylog2.plugin-dir>
 
         <!-- Test dependencies -->
         <assertj-core.version>3.20.2</assertj-core.version>
@@ -284,60 +283,6 @@
                         </configuration>
                     </execution>
                 </executions>
-            </plugin>
-            <plugin>
-                <artifactId>jdeb</artifactId>
-                <groupId>org.vafer</groupId>
-                <configuration>
-                    <deb>${project.build.directory}/${project.artifactId}-${project.version}.deb</deb>
-                    <dataSet>
-                        <data>
-                            <src>${project.build.directory}/${project.build.finalName}.jar</src>
-                            <type>file</type>
-                            <mapper>
-                                <type>perm</type>
-                                <prefix>${graylog2.plugin-dir}</prefix>
-                                <filemode>644</filemode>
-                                <user>root</user>
-                                <group>root</group>
-                            </mapper>
-                        </data>
-                    </dataSet>
-                    <signPackage>true</signPackage>
-                    <signMethod>dpkg-sig</signMethod>
-                    <signRole>builder</signRole>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>rpm-maven-plugin</artifactId>
-                <configuration>
-                    <group>Application/Internet</group>
-                    <prefixes>
-                        <prefix>/usr</prefix>
-                    </prefixes>
-                    <defineStatements>
-                        <defineStatement>_unpackaged_files_terminate_build 0</defineStatement>
-                        <defineStatement>_binaries_in_noarch_packages_terminate_build 0</defineStatement>
-                    </defineStatements>
-                    <defaultFilemode>644</defaultFilemode>
-                    <defaultDirmode>755</defaultDirmode>
-                    <defaultUsername>root</defaultUsername>
-                    <defaultGroupname>root</defaultGroupname>
-                    <mappings>
-                        <mapping>
-                            <directory>${graylog2.plugin-dir}</directory>
-                            <sources>
-                                <source>
-                                    <location>${project.build.directory}/</location>
-                                    <includes>
-                                        <include>${project.build.finalName}.jar</include>
-                                    </includes>
-                                </source>
-                            </sources>
-                        </mapping>
-                    </mappings>
-                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.sonatype.plugins</groupId>

@@ -28,7 +28,7 @@ jobs:
           path: graylog2-server
           key: ${{ runner.os }}-graylog2-server-${{ steps.requestPom.outputs.graylogVersion }}
       - name: Check out Graylog
-        if: steps.cache.outputs.cache-hit != 'true'
+        if: steps.cache-graylog.outputs.cache-hit != 'true'
         uses: actions/checkout@v2
         with:
           repository: Graylog2/graylog2-server

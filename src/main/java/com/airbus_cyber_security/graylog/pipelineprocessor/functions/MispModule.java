@@ -14,29 +14,10 @@
  * along with this program. If not, see
  * <http://www.mongodb.com/licensing/server-side-public-license>.
  */
-package com.airbus_cyber_security.graylog;
+package com.airbus_cyber_security.graylog.pipelineprocessor.functions;
 
-import com.airbus_cyber_security.graylog.pipelineprocessor.functions.MispModule;
-import com.google.auto.service.AutoService;
-import org.graylog2.plugin.Plugin;
-import org.graylog2.plugin.PluginMetaData;
 import org.graylog2.plugin.PluginModule;
 
-import java.util.Collection;
-import java.util.Collections;
+public class MispModule extends PluginModule {
 
-/**
- * Implement the Plugin interface here.
- */
-@AutoService(Plugin.class)
-public class MispPlugin implements Plugin {
-    @Override
-    public PluginMetaData metadata() {
-        return new MispMetaData();
-    }
-
-    @Override
-    public Collection<PluginModule> modules () {
-        return Collections.<PluginModule>singletonList(new MispModule());
-    }
 }

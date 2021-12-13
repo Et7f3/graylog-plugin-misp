@@ -25,7 +25,8 @@ import org.graylog.plugins.pipelineprocessor.ast.functions.FunctionDescriptor;
 public class MispLookupFunction extends AbstractFunction<Boolean> {
 
     public static final String NAME = "misp_lookup";
-    
+
+    private final ParameterDescriptor<String, String> valueParameter = ParameterDescriptor.string("value").description("Value of the attribute to look for in MISP.").build();
     private final ParameterDescriptor<String, String> attributeTypeParameter = ParameterDescriptor.string("attribute_type").description("The type of attribute to look for in MISP.").build();
 
     @Override
@@ -37,8 +38,8 @@ public class MispLookupFunction extends AbstractFunction<Boolean> {
     public FunctionDescriptor<Boolean> descriptor() {
         return FunctionDescriptor.<Boolean>builder()
                 .name(NAME)
-                .description("Searches for the presence of an attribute with given attribute type in MISP.")
-                .params(attributeTypeParameter)
+                .description("Searches for the presence of an attribute with given type in MISP.")
+                .params(valueParameter, attributeTypeParameter)
                 .returnType(Boolean.class)
                 .build();
     }

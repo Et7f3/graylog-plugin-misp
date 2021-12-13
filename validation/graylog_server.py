@@ -23,11 +23,14 @@ class GraylogServer:
         subprocess.run(['docker-compose', 'down'], cwd=self._docker_compose_path)
 
     def has_pipeline_rule_function(self, name):
+        return self.get_pipeline_rule_function(name) is not None
+
+    def get_pipeline_rule_function(self, name):
         pipeline_rule_functions = self._rest_api.get('system/pipelines/rule/functions')
         for pipeline_rule_function in pipeline_rule_functions.json():
             if pipeline_rule_function['name'] == name:
-                return True
-        return False
+                return pipeline_rule_function
+        return None
 
     def _input_is_running(self, identifier):
         response = self._rest_api.get('system/inputstates/')

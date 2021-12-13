@@ -32,3 +32,7 @@ class Test(TestCase):
         misp_lookup = self._graylog.get_pipeline_rule_function('misp_lookup')
         first_parameter = misp_lookup['params'][0]
         self.assertEqual(first_parameter['name'], 'value')
+
+    def test_create_pipeline_rule_with_function_misp_lookup_should_not_fail(self):
+        response = self._graylog.create_pipeline_rule()
+        self.assertEqual(response.status_code, 200)

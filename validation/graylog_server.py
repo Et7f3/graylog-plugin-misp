@@ -111,3 +111,10 @@ class GraylogServer:
         self._rest_api.post('streams/{}/rules'.format(stream_identifier), rule)
         self._rest_api.post('streams/{}/resume'.format(stream_identifier))
         return stream_identifier
+
+    def create_pipeline_rule(self):
+        payload = {
+            'description': '',
+            'source': 'rule "MISP Lookup: src_addr"\nwhen\n has_field("src_addr")\nthen\n let src_addr = to_string($message.src_addr);\n let found = misp_lookup(src_addr, "ip-src");\n set_field("found_in_misp", found);\nend\n'
+        }
+        return self._rest_api.post('system/pipelines/rule/parse', payload)

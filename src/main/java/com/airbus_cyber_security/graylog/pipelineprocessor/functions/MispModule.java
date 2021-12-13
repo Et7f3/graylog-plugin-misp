@@ -16,12 +16,28 @@
  */
 package com.airbus_cyber_security.graylog.pipelineprocessor.functions;
 
+import com.google.inject.Binder;
+import com.google.inject.multibindings.MapBinder;
+import com.google.inject.TypeLiteral;
 import org.graylog2.plugin.PluginModule;
+import org.graylog.plugins.pipelineprocessor.ast.functions.Function;
 
 public class MispModule extends PluginModule {
 
     @Override
     protected void configure() {
-        
+        addMessageProcessorFunction(MispLookupFunction.NAME, MispLookupFunction.class);
+    }
+
+    private void addMessageProcessorFunction(String name, Class<? extends Function<?>> functionClass) {
+        MapBinder<String, Function<?>> processorFunctionBinder = createProcessorFunctionBinder();
+        processorFunctionBinder.addBinding(name).to(functionClass).asEagerSingleton();
+    }
+
+    private MapBinder<String, Function<?>> createProcessorFunctionBinder() {
+        Binder binder = binder();
+        TypeLiteral<String> keyType = TypeLiteral.get(String.class);
+        TypeLiteral<Function<?>> valueType = new TypeLiteral<Function<?>>() {};
+        return MapBinder.newMapBinder(binder, keyType, valueType);
     }
 }

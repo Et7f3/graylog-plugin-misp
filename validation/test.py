@@ -30,3 +30,13 @@ class Test(TestCase):
     def test_start_should_load_plugin(self):
         logs = self._graylog.extract_logs()
         self.assertIn('INFO : org.graylog2.bootstrap.CmdLineTool - Loaded plugin: MISP', logs)
+
+    def _has_pipeline_rule_function(self, name):
+        pipeline_rule_functions = self._graylog_rest_api.get('system/pipelines/rule/functions')
+        for pipeline_rule_function in pipeline_rule_functions.json():
+            if pipeline_rule_function['name'] == name:
+                return True
+        return False
+
+    def test_pipeline_rule_functions_should_include_misp_lookup(self):
+        self.assertTrue(self._has_pipeline_rule_function('misp_lookup'))

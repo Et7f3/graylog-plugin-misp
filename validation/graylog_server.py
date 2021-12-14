@@ -117,4 +117,40 @@ class GraylogServer:
             'description': '',
             'source': 'rule "MISP Lookup: src_addr"\nwhen\n has_field("src_addr")\nthen\n let src_addr = to_string($message.src_addr);\n let found = misp_lookup(src_addr, "ip-src");\n set_field("found_in_misp", found);\nend\n'
         }
-        return self._rest_api.post('system/pipelines/rule/parse', payload)
+        return self._rest_api.post('system/pipelines/rule', payload)
+
+    def create_pipeline(self):
+        payload = {
+            'description': '',
+            'source': 'pipeline "pipeline"\nstage 0 match either\nrule "MISP Lookup: src_addr"\nend',
+        }
+        response = self._rest_api.post('system/pipelines/pipeline', payload)
+        pipeline = response.json()
+        payload = {
+            'pipeline_id': pipeline['id'],
+            'stream_ids': ['000000000000000000000001']
+        }
+        self._rest_api.post('system/pipelines/connections/to_pipeline', payload)
+
+    def _get_messages(self):
+        payload = {
+            'queries': [{
+                'search_types': [{
+                    'type': 'messages'
+                }]
+            }]
+        }
+        response = self._rest_api.post('views/search/sync', payload)
+        body = response.json()
+        for result in body['results'].values():
+            for search_type in result['search_types'].values():
+                messages = search_type['messages']
+                return messages
+
+    def wait_for_message(self):
+        while True:
+            messages = self._get_messages()
+            if len(messages) > 0:
+                message = messages[0]
+                return message['message']
+            time.sleep(1)

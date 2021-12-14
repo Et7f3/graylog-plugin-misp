@@ -36,3 +36,14 @@ class Test(TestCase):
     def test_create_pipeline_rule_with_function_misp_lookup_should_not_fail(self):
         response = self._graylog.create_pipeline_rule()
         self.assertEqual(response.status_code, 200)
+
+    def test_pipeline_with_misp_lookup_should_add_a_new_field_to_message(self):
+        self._graylog.create_pipeline_rule()
+        self._graylog.create_pipeline()
+
+        with self._graylog.create_gelf_input() as gelf_inputs:
+            gelf_inputs.send({'src_addr': '192.168.1.254'})
+
+            last_message = self._graylog.wait_for_message()
+            self.assertFalse(last_message['found_in_misp'])
+
